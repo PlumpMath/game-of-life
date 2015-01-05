@@ -71,6 +71,12 @@ class Grid(object):
         # Northwest
         yield (x - 1) % self.width, (y + 1) % self.height
 
+    def living_neighbors(self, cell):
+        """Generate living neighbors of cell."""
+        for other in (neigh for neigh in self.neighbors(cell) 
+                      if neigh in self.living):
+            yield other
+
     def populate(self, population=None):
         """Initialize with the set of cells contained in the population set."""
         if population is None:
