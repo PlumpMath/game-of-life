@@ -13,6 +13,23 @@ __version__ = '1.0.0'
 import itertools
 
 
+BEACON = {(0, 0), (0, 1), (1, 0), (2, 3), (3, 2), (3, 3)}
+BLINKER = {(0, 0), (1, 0), (2, 0)}
+GLIDER = {(0, 0), (0, 1), (1, 0), (1, 2), (2, 0)}
+
+
+def offset(cells, x_offset, y_offset):
+    """Return a set of cells with x and y offsets applied."""
+    return {(x + x_offset, y + y_offset) for x, y in cells}
+
+
+def sample_population():
+    """Return a sample population of cells."""
+    return (offset(GLIDER, 0, 0) | 
+            offset(BEACON, 2, 10) | 
+            offset(BLINKER, 10, 2))
+
+
 class Grid(object):
 
     def __init__(self, width=1, height=1):
@@ -62,16 +79,3 @@ class Grid(object):
         self.height = max(self.height, max(y + 1 for x, y in population))
         self.living = population
         self.generations = 1
-
-
-def sample_population():
-    """Return a sample population of cells."""
-    beacon = {(0, 0), (0, 1), (1, 0), (2, 3), (3, 2), (3, 3)}
-    blinker = {(0, 0), (1, 0), (2, 0)}
-    glider = {(0, 0), (0, 1), (1, 0), (1, 2), (2, 0)}
-    setup = [(0, 0, glider), (2, 10, beacon), (10, 2, blinker)]
-    population = set()
-    for x_offset, y_offset, shape in setup:
-        for x, y in shape:
-            population.add((x + x_offset, y + y_offset))
-    return population
