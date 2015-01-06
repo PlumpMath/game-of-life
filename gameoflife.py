@@ -42,6 +42,8 @@ class Grid(object):
 
     def cycle(self):
         """Update grid with the next generation of living cells."""
+        if not self.living:
+            return
         self.generations += 1
         nextgen = set()
         living = self.living
