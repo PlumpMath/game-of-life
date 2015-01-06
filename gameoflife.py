@@ -35,8 +35,10 @@ class Grid(object):
     def __init__(self, width=1, height=1):
         self.width = max(width, 1)
         self.height = max(height, 1)
-        self.living = set()
         self.generations = 0
+        self.living = set()
+        self.new_born = set()
+        self.new_dead = set()
 
     def cycle(self):
         """Update grid with the next generation of living cells."""
@@ -49,7 +51,15 @@ class Grid(object):
             count = sum((other in living) for other in self.neighbors(cell))
             if count == 3 or (count == 2 and cell in living):
                 nextgen.add(cell)
+        self.new_born = nextgen.difference(living)
+        self.new_dead = living.difference(nextgen)
         self.living = nextgen
+
+    def live_neighbors(self, cell):
+        """Generate neighbors of cell that are among the living."""
+        for other in (neigh for neigh in self.neighbors(cell) 
+                      if neigh in self.living):
+            yield other
 
     def neighbors(self, cell):
         """Generate eight neighboring cells for the given cell."""
@@ -71,17 +81,13 @@ class Grid(object):
         # Northwest
         yield (x - 1) % self.width, (y + 1) % self.height
 
-    def living_neighbors(self, cell):
-        """Generate living neighbors of cell."""
-        for other in (neigh for neigh in self.neighbors(cell) 
-                      if neigh in self.living):
-            yield other
-
     def populate(self, population=None):
-        """Initialize with the set of cells contained in the population set."""
+        """Seed grid with the cells contained in the population set."""
         if population is None:
             population = sample_population()
         self.width = max(self.width, max(x + 1 for x, y in population))
         self.height = max(self.height, max(y + 1 for x, y in population))
-        self.living = population
         self.generations = 1
+        self.living = population
+        self.new_born = self.living
+        self.new_dead = set()
