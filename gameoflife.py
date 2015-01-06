@@ -44,6 +44,8 @@ class Grid(object):
         """Update grid with the next generation of living cells."""
         if not self.living:
             return
+        if self.generations > 1 and not self.new_born and not self.new_dead:
+            return
         self.generations += 1
         nextgen = set()
         living = self.living
