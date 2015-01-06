@@ -91,5 +91,5 @@ class Grid(object):
         self.height = max(self.height, max(y + 1 for x, y in population))
         self.generations = 1
         self.living = population
-        self.new_born = self.living
+        self.new_born = set()
         self.new_dead = set()
