@@ -126,7 +126,6 @@ class Farm(object):
 
     def plant(self, max_cells):
         """Plant seeds up to a maximum complexity of max_cells."""
-        progress = 1
         grid = self.grid
         seed_number = 0
         for n in range(max_cells):
@@ -143,8 +142,6 @@ class Farm(object):
                 self.seeds.append(seed)
                 grid.populate(cells)
                 while True:
-                    print(progress, end='')
-                    progress += 1
                     if grid.living in self.grid_history:
                         # The cells in grid.living have been seen before,
                         # either by the current seed or a previous one.
