@@ -49,6 +49,24 @@ class Grid(object):
         self.new_born = set()
         self.new_dead = set()
 
+    @property
+    def dead_count(self):
+        if not self.live_count and not self.generations:
+            return 0
+        return (self.width * self.height) - self.live_count
+
+    @property
+    def live_count(self):
+        return len(self.living)
+
+    @property
+    def new_born_count(self):
+        return len(self.new_born)
+
+    @property
+    def new_dead_count(self):
+        return len(self.new_dead)
+
     def cycle(self):
         """Update grid with the next generation of living cells."""
         if not self.living:
